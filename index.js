@@ -3,6 +3,7 @@ import cors from "cors"
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt"
 import multer from "multer";
+import {Form} from "./conn.js"
 
 const app = express();
 
@@ -46,8 +47,19 @@ app.post("/signup", async (req, res) => {
 
 app.post("/bookingform", upload.fields([{ name: 'hotelimage', maxCount: 1 }]), async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.files);
+        const obj = {
+            hotelname: "String",
+            hotelphone: "String",
+            hotelemail: "String",
+            hotellocation: "String",
+            hotelrent: "String",
+            hotelimage:"String"
+        }
+        const newForm = new Form(obj)
+        const formData = await newForm.save()
+        console.log(formData);
+        // console.log(req.body);
+        // console.log(req.files);
         res.status(200).json({ data: "hello form" })
     }
     catch (err) {
