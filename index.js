@@ -60,6 +60,7 @@ app.post("/signup", async (req, res) => {
     }
 })
 
+//post api for sign in user
 app.post("/signin", async (req, res) => {
     try {
         const { email, password } = req.body;

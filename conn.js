@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect('mongodb://rajendra0968jangid:71XRWGUdx1X7fRqf@ac-d1apbty-shard-00-00.hh3bywt.mongodb.net:27017,ac-d1apbty-shard-00-01.hh3bywt.mongodb.net:27017,ac-d1apbty-shard-00-02.hh3bywt.mongodb.net:27017/uniqueone?ssl=true&replicaSet=atlas-r6lhzh-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect('mongodb://localhost:27017/backendbookingsite');
 
 const con = mongoose.connection;
 con.on('open', () => {
