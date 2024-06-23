@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect('mongodb+srv://rajendra0968jangid:1Xq9A6sWeM7Ezq8r@cluster0.rnzix4l.mongodb.net/backendbookingsite');
+mongoose.connect('mongodb://localhost:27017/backendbookingsite');
 
 const con = mongoose.connection;
 

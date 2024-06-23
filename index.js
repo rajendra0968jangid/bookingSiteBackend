@@ -3,9 +3,16 @@ import cors from "cors"
 import bodyParser from "body-parser";
 import bcrypt from "bcrypt"
 import multer from "multer";
-import {Form} from "./conn.js"
+import { Form } from "./conn.js"
+import path from "path"
+import { fileURLToPath } from 'url';
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname,'uploads')));
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -47,13 +54,14 @@ app.post("/signup", async (req, res) => {
 
 app.post("/bookingform", upload.fields([{ name: 'hotelimage', maxCount: 1 }]), async (req, res) => {
     try {
+        const { hotelemail, hotellocation, hotelname, hotelphone, hotelrent } = req.body;
         const obj = {
-            hotelname: "String",
-            hotelphone: "String",
-            hotelemail: "String",
-            hotellocation: "String",
-            hotelrent: "String",
-            hotelimage:"String"
+            hotelname: hotelname,
+            hotelphone: hotelphone,
+            hotelemail: hotelemail,
+            hotellocation: hotellocation,
+            hotelrent: hotelrent,
+            hotelimage: req.files.hotelimage[0].filename
         }
         const newForm = new Form(obj)
         const formData = await newForm.save()
@@ -67,4 +75,66 @@ app.post("/bookingform", upload.fields([{ name: 'hotelimage', maxCount: 1 }]), a
     }
 })
 
+app.get('/bookingdata', async (req, res) => {
+    try {
+        const allData = await Form.find();
+        res.status(200).json(allData)
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+
+// Route to serve the image
+app.get('/image/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'upload', imageName);
+    res.sendFile(imagePath);
+});
+
+app.delete("/bookingdatadelete/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const delData = await Form.deleteOne({ _id: id }); // returns {deletedCount: 1}
+        res.status(200).json({ data: "successfully deleted" })
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+app.put("/bookingdataedit/:id", upload.fields([{ name: 'hotelimage', maxCount: 1 }]), async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(req.body)
+        let checkImage = (req.files['hotelimage'])?req.files['hotelimage'][0].filename:false;
+        console.log(checkImage);
+        const { hotelemail, hotellocation, hotelname, hotelphone, hotelrent } = req.body;
+        const obj = {
+            hotelname: hotelname,
+            hotelphone: hotelphone,
+            hotelemail: hotelemail,
+            hotellocation: hotellocation,
+            hotelrent: hotelrent,
+            hotelimage:(checkImage)?req.files['hotelimage'][0].filename:req.body.hotelimage
+        }
+
+        const editData = await Form.findByIdAndUpdate(id, obj, { new: true });
+        res.status(200).json({ data: "successfully updated" })
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+app.get('/bookingdatabyid/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const formData = await Form.findById(id).exec()
+        // console.log(formData);
+        res.status(200).json(formData)
+    } catch (err) {
+        console.log(err)
+    }
+})
 app.listen(8000)
