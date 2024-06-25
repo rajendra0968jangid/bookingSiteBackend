@@ -126,10 +126,11 @@ app.get('/image/:imageName', (req, res) => {
 app.delete("/bookingdatadelete/:id", async (req, res) => {
     try {
         const id = req.params.id
+        // console.log(req.params.id)
         const delData = await Form.deleteOne({ _id: id }); // returns {deletedCount: 1}
         res.status(200).json({ data: null, message: "Successfully deleted" })
     }
-    catch (err) {
+    catch (err) {   
         console.log(err)
         res.status(500).json({ data: null, message: err.message })
     }
