@@ -64,7 +64,7 @@ app.post("/signup", async (req, res) => {
 app.post("/signin", async (req, res) => {
     try {
         const { email, password } = req.body;
-        const userData = await User.findOne({ email });
+        const userData = await User.findOne({ email,password });
         return res.status(200).json({ data: userData, message: "User log in successfully" })
     } catch (err) {
         console.log(err);
@@ -127,7 +127,7 @@ app.delete("/bookingdatadelete/:id", async (req, res) => {
     try {
         const id = req.params.id
         // console.log(req.params.id)
-        const delData = await Form.deleteOne({ _id: id }); // returns {deletedCount: 1}
+        const delData = await Form.delete({ _id: id }); // returns {deletedCount: 1}
         res.status(200).json({ data: null, message: "Successfully deleted" })
     }
     catch (err) {   
