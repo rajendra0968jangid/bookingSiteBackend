@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect('mongodb://localhost:27017/mydatabase');
+mongoose.connect('mongodb://rajendra0968jangid:QsvtAztpE91H46tt@ac-8vpdky0-shard-00-00.1m4zxut.mongodb.net:27017,ac-8vpdky0-shard-00-01.1m4zxut.mongodb.net:27017,ac-8vpdky0-shard-00-02.1m4zxut.mongodb.net:27017/mydatabase?replicaSet=atlas-ztr7vs-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0');
 
 const con = mongoose.connection;
 con.on('open', () => {
